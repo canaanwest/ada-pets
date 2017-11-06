@@ -36,6 +36,19 @@ class PetsControllerTest < ActionDispatch::IntegrationTest
         pet.keys.sort.must_equal keys
       end
     end
+
+    it "returns an empty array if there are no pets" do
+      #arrange
+      Pet.destroy_all
+      #act
+      get pets_path
+      #assert
+      must_respond_with :success
+      body = JSON.parse(response.body)
+      body.must_be_kind_of Array
+      body.must_be :empty?
+      #we get this for free from as json!
+    end
   end
 
   describe "show" do
